@@ -175,6 +175,7 @@ size = Vector3(2, 1.19631, 4.5)
 mass = 1000.0
 max_steer = 0.4
 max_brake_force = 3000.0
+max_handbrake_force = 2000.0
 fuel_tank_size = 50.0
 max_torque = 150.0
 max_engine_rpm = 7500.0

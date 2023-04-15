@@ -18,6 +18,7 @@ enum DRIVE_TYPE{
 @export var front_brake_bias = 0.6
 @export var steer_speed = 5.0
 @export var max_brake_force = 500.0
+@export var max_handbrake_force := 1000.0
 @export var fuel_tank_size = 40.0 #Liters
 @export var fuel_percentage = 100.0 # % of full tank
 
@@ -134,7 +135,6 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _process(delta: float) -> void:
-	
 	brake_input = Input.get_action_strength("Brake")
 	steering_input = Input.get_action_strength("SteerLeft") - Input.get_action_strength("SteerRight")
 	throttle_input = Input.get_action_strength("Throttle")
@@ -143,9 +143,9 @@ func _process(delta: float) -> void:
 	
 	drive_inertia = engine_moment + pow(abs(gearRatio()), 2) * gear_inertia
 	
-	var rear_brake_input = max(brake_input, handbrake_input)
 	front_brake_force = max_brake_force * brake_input * front_brake_bias
-	rear_brake_force = max_brake_force * rear_brake_input * (1 - front_brake_bias)
+	rear_brake_force = max_brake_force * brake_input * (1 - front_brake_bias)
+	rear_brake_force = max(rear_brake_force, max_handbrake_force * handbrake_input)
 	
 	if automatic:
 		var reversing = false
